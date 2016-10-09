@@ -26,4 +26,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function activation()
+    {
+        return $this->hasOne(UserActivation::class);
+    }
+
+    public function isActive()
+    {
+        return $this->activated;
+    }
 }

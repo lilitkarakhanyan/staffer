@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Laravel',
+    'name' => 'Staffer',
 
     /*
     |--------------------------------------------------------------------------
@@ -177,6 +177,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        PrettyRoutes\ServiceProvider::class,
+        Barryvdh\TranslationManager\ManagerServiceProvider::class,
 
     ],
 

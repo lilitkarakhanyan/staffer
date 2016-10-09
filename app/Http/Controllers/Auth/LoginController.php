@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\WelcomeEmailEvent;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\UserActivation;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -25,7 +30,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = 'dashboard';
 
     /**
      * Create a new controller instance.
@@ -35,5 +40,20 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'logout']);
+    }
+
+    public function verifyEmail($token)
+    {
+        $userActivation = UserActivation::where('token', $token)->first();
+        if ($userActivation) {
+            $user = User::find($userActivation->user_id);
+            $user->activated = 1;
+            $user->save();
+            UserActivation::where('token', $token)->delete();
+            Auth::login($user);
+            event(new WelcomeEmailEvent($user));
+            return redirect()->route('dashboard')->with('success', 'Your email was been verified!');
+        }
+        return redirect()->route('login')->with('warning', 'Invalid token');
     }
 }
