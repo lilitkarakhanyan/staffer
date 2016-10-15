@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Events\WelcomeEmailEvent;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -35,5 +37,14 @@ class User extends Authenticatable
     public function isActive()
     {
         return $this->activated;
+    }
+
+    public function activate()
+    {
+        $this->activated = 1;
+        $this->save();
+        $this->activation()->delete();
+        Auth::login($this);
+        event(new WelcomeEmailEvent($this));
     }
 }

@@ -13,9 +13,11 @@
     <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
 </head>
 
 <body class="gray-bg">
+
 @if ($message = Session::get('success'))
     <div class="alert alert-success">
         <p>{{ $message }}</p>
@@ -27,6 +29,7 @@
         <p>{{ $message }}</p>
     </div>
 @endif
+
 @yield('content')
 
 <!-- Mainly scripts -->

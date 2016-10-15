@@ -12,6 +12,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-//        Auth::guard()->logout();
+        return view('dashboard.index');
     }
 }

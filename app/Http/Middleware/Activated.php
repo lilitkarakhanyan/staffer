@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 
 class Activated
 {
@@ -20,6 +21,7 @@ class Activated
             Auth::logout();
             return redirect()->route('login')->with('warning','Please check your email and verify your email address.');
         }
+        View::share('admin',Auth::user());
         return $next($request);
     }
 }

@@ -46,12 +46,7 @@ class LoginController extends Controller
     {
         $userActivation = UserActivation::where('token', $token)->first();
         if ($userActivation) {
-            $user = User::find($userActivation->user_id);
-            $user->activated = 1;
-            $user->save();
-            UserActivation::where('token', $token)->delete();
-            Auth::login($user);
-            event(new WelcomeEmailEvent($user));
+            $userActivation->user->activate();
             return redirect()->route('dashboard')->with('success', 'Your email was been verified!');
         }
         return redirect()->route('login')->with('warning', 'Invalid token');
